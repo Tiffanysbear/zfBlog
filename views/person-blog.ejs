@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../../css/clndr.css">
+  <link rel="stylesheet" type="text/css" href="../../css/index.css">
+</head>
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+  <% if (isSelf) {%>
+      <div class="navbar-header">
+        <a href="/index" class="navbar-brand">My Blog</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="/index"><span class="glyphicon glyphicon-home"></span>  主页</a>
+          </li>
+    
+            <li><a href="#"><span class="glyphicon glyphicon-list-alt"></span> 我的博客 </a></li>
+            <li><a href="/blog-create/b0" target="_blank"><span class="glyphicon glyphicon-list-alt"></span> 新建博客 </a></li>
+  
+          
+        </ul>
+        <% if (typeof userInfo != 'undefined') {%>
+        <ul class="nav navbar-nav user-message">
+          <li class="mess-tips">
+              <span class="glyphicon glyphicon-envelope envelope"> </span>
+              <span class="news">5</span>
+          </li>
+          <li>
+            <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+              <% if(userInfo.image) { %>
+                  <img class="user-img" src="<%= userInfo.image%>">
+              <% }else {%>
+                  <img class="user-img" src="../../images/user-photo/default-img.jpg">
+              <% }%>
+              <span class="username" data-userid="<%= userInfo.id %>"><%= userInfo.user_name%></span>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                <li><a href="/signout"><span class="glyphicon glyphicon-log-out log-out"></span> Log Out</a></li>
+            </ul>
+          </li>
+        </ul>
+        <% } else {%>
+        <ul class="nav navbar-nav user-message">
+          <li class="mess-tips">
+            <a href="/signin">我要登录</a>
+          </li>
+          <li>
+            <a href="/signin">注册</a>
+          </li>
+        </ul>
+        <% }%>
+        
+      </div>
+  <% } else { %>
+        <div class="navbar-header">
+          <a class="navbar-brand"><%= userInfo.user_name %></a>
+          <span class="navbar-brand signature" style="font-size: 15px;margin-left: 15px;"><%= userInfo.signature %></span>
+        </div>
+        <a href="/index" class="navbar-brand signature" style="float: right;font-size: 15px;margin-left: 15px;">返回主页</a>
+      <% } %>
+    </div>
+  </nav>
+
+<div id="zfcontent">
+  <div class="container">
+    <div id="maincontent">
+      <!-- 左边侧栏内容开始 -->
+      <div id="leftside" class="col-md-8">
+        <div class="article-list">
+          <!--使用循环循环展示blog的内容-->
+          <% if(!blog.length){%>
+              <article class ="sample">
+                什么都还没有，加油哦~
+              </article>
+          <% } %>
+          <% for(var i = 0; i < blog.length; i++)
+          {
+          %>
+
+          <article class ="sample">
+            <div class="tagstyle">
+              <span class="tagname">ASP.NET MVC</span>
+              <span class="trag"></span>
+              <a href="/blog-detail/d<%= blog[i].id %>" target="_blank" ><%= blog[i].title %></a>
+            </div>
+            <div class="rim-info">
+              <span class="glyphicon glyphicon-dashboard"> </span><span><%= blog[i].create_time %></span>
+              <span class="glyphicon glyphicon-eye-open"> </span><span>浏览(<%= blog[i].watch_count %>) </span>
+              <span class="glyphicon glyphicon-edit"> </span><span> 评论(<%= blog[i].comment_count %>) </span>
+              <div class="heart" data-id="<%= blog[i].id %>" rel="unlike">
+              </div>
+              <span class="likeCount" id="likeCount<%= blog[i].id %>">(<%= blog[i].upvote_count %>) </span>
+            </div>
+            <div class="blogcontent hidden-xs">
+              <p class="blog-summary"><%- blog[i].summary %></p>
+            </div>
+            <div class="article-footer hidden-xs">
+              <% for (var k = 0; k < blog[i].lable.split(',').length; k++ ) {%>
+                <span><a href=""><%= blog[i].lable.split(',')[k]  %></a></span>
+              <% } %>
+              <a class="text-span" href="/blog-detail/d<%= blog[i].id %>" target="_blank">继续阅读&gt;&gt;</a>
+              <% if (isSelf) {%>
+                <a class="text-span delete-blog" data-blogid="<%= blog[i].id %>" >删除博客</a>
+                <a class="text-span" href="/blog-create/b<%= blog[i].id %>">修改博客</a>
+              <% } %>
+            </div>
+          </article>
+
+          <% } %>
+
+
+        </div>
+        <!-- 分页开始 -->
+        <div class="pagebean">
+          <ul class="pagination">
+
+            <% if(pagecnt >= 2 ){%>
+            <li>
+              <% if(currentPage == 1){%>
+                <span aria-hidden="true">&laquo;</span>
+              <% }else{ %>
+              <a href="p<%= Number(currentPage) - 1%>" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+              <% } %>
+            </li>
+            <% } %>
+
+            <% for(var i = 1; i <= pagecnt ; i++)
+            {   if(i == currentPage){
+            %>
+                <li class="active"><a href="index.html?page=<%= i %>"><%= i %></a></li>
+            <% }else{ %>
+                <li><a href="p<%= i %>"><%= i %></a></li>
+            <% } }%>
+
+            <% if(pagecnt >= 2 ){%>
+            <li>
+              <% if(currentPage == pagecnt){%>
+              <span aria-hidden="true">&raquo;</span>
+              <% }else{ %>
+              <a href="p<%= Number(currentPage) + 1 %>" aria-label="Previous">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+              <% } %>
+            </li>
+            <% } %>
+
+          </ul>
+        </div><!-- 分页结束 -->
+      </div><!-- 左边侧栏内容结束 -->
+
+      <!-- 右边侧栏内容开始 -->
+      <div id="rightside" class="col-md-4">
+        <!-- 相册 -->
+        <div class="rightmodule  hidden-sm hidden-xs">
+          <div class="remark-header">
+            <span class="glyphicon glyphicon-tree-deciduous"></span>
+            <span>个人信息</span>
+            <span class="glyphicon glyphicon-chevron-up dohide"> </span>
+            <% if (isSelf) {%>
+            <span class="glyphicon glyphicon-edit doremove"> </span>
+            <% } %>
+          </div>
+          <div class="photoshow row">
+            <div class="col-md-12">
+              <div class="panel">
+                  <div class="panel-body">
+                      <div class="profile-pic text-center">
+                          <% if (userInfo.image) { %>
+                              <img src="<%= userInfo.image%>">
+                          <% } else {%>
+                              <img src="../images/user-photo/default-img.jpg">
+                          <% } %>
+                          <% if (isSelf) {%>
+                          <input type="file" id="file" name="file" style="display:none"/>
+                          <% } %>
+                      </div>
+                  </div>
+              </div>
+            </div> 
+            <div class="col-md-12">
+              <div class="panel">
+                  <div class="panel-body">
+                      <ul class="p-info">
+                          <li>
+                              <div class="title">ID</div>
+                              <div class="desk uname"><%= userInfo.user_name%></div>
+                          </li>
+                          <li>
+                              <div class="title">Signature</div>
+                              <% if (userInfo.signature) {%>
+                                <div class="desk signature"><%= userInfo.signature%></div>
+                              <% }else{ %>
+                                <div class="desk signature">这个人很懒，什么都没留下</div>
+                              <% }%>
+                          </li>
+                          <li>
+                              <div class="title">Register Date</div>
+                              <div class="desk"><%= userInfo.regtime%></div>
+                          </li>
+                      </ul>
+                  </div>
+                  <p class="update-tip"></p>
+              </div>
+              <div class="edit-ok">
+                <button class="btn btn-info">
+                  <span class="glyphicon glyphicon-ok"></span>
+                </button>
+              </div>
+            </div>   
+          </div>
+
+
+        </div>
+        <!-- 评论模块 -->
+        <div class="rightmodule hidden-sm hidden-xs">
+          <div class="remark-header">
+            <span class="glyphicon glyphicon-leaf"></span>
+            <span>小日历</span>
+            <span class="glyphicon glyphicon-chevron-up dohide"> </span>
+            <span class="glyphicon glyphicon-remove doremove"> </span>
+          </div>
+          <div class="remark-list">
+            <div class="cal1"></div>
+          </div>
+        </div>
+
+      </div><!-- 右边侧栏内容结束 -->
+
+    </div>
+  </div>
+
+</div>
+
+<!-- footer开始 -->
+<footer>
+  <div class="container foot">
+    Copyright © 2016 zfBlog / Tiffany  |   联系我 : <a href="mailto:976156821@qq.com">976156821@qq.com</a>   |  All Rights Reserved.
+  </div>
+</footer>
+<script type="text/javascript" src="../../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../../js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../../js/jquery.ajaxfileupload.js"></script>
+<script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+<script type="text/javascript" src="../../js/clndr.js"></script>
+<script type="text/javascript" src="../../js/blog-index.js"></script>
+</body>
+</html>

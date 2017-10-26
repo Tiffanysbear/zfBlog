@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+  <link rel="shortcut icon" href="#" type="image/png">
+
+  <title>博客管理</title>
+
+  <!--dynamic table-->
+  <link href="css/demo_page.css" rel="stylesheet" />
+  <link href="css/demo_table.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/DT_bootstrap.css" />
+
+  <link href="css/style.css" rel="stylesheet">
+  <link href="css/style-responsive.css" rel="stylesheet">
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="js/html5shiv.js"></script>
+  <script src="js/respond.min.js"></script>
+  <![endif]-->
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <!-- left side start-->
+    <div class="left-side sticky-left-side">
+
+        <!--logo and iconic logo start-->
+        <div class="logo">
+            <a href="index.html"><img src="images/logo.png" alt=""></a>
+        </div>
+
+        <div class="logo-icon text-center">
+            <a href="index.html"><img src="images/logo_icon.png" alt=""></a>
+        </div>
+        <!--logo and iconic logo end-->
+
+
+        <div class="left-side-inner">
+
+            <!-- visible to small devices only -->
+            <div class="visible-xs hidden-sm hidden-md hidden-lg">
+                <div class="media logged-user">
+                    <img alt="" src="images/user-avatar.png" class="media-object">
+                    <div class="media-body">
+                        <h4><a href="#">John Doe</a></h4>
+                        <span>"Hello There..."</span>
+                    </div>
+                </div>
+
+                <h5 class="left-nav-title">Account Information</h5>
+                <ul class="nav nav-pills nav-stacked custom-nav">
+                    <li><a href="#"><i class="fa fa-user"></i> <span>Profile</span></a></li>
+                    <li><a href="#"><i class="fa fa-cog"></i> <span>Settings</span></a></li>
+                    <li><a href="#"><i class="fa fa-sign-out"></i> <span>Sign Out</span></a></li>
+                </ul>
+            </div>
+
+            <!--sidebar nav start-->
+            <ul class="nav nav-pills nav-stacked custom-nav">
+                <li>
+                    <a href="usermanage"><i class="fa fa-home"></i> <span>用户管理</span></a></li>
+                <li class="active">
+                    <a href="backmanage"><i class="fa fa-laptop"></i> <span>博客管理</span></a>
+                </li>
+
+
+            </ul>
+            <!--sidebar nav end-->
+
+        </div>
+    </div>
+    <!-- left side end-->
+    
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <!-- header section start-->
+        <div class="header-section">
+
+        <!--toggle button start-->
+        <a class="toggle-btn"><i class="fa fa-bars"></i></a>
+        <!--toggle button end-->
+
+        <!--notification menu start -->
+        <div class="menu-right">
+            <ul class="notification-menu">
+                <li>
+                    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <% if(userInfo.image) { %>
+                            <img src="<%= userInfo.image%>">
+                        <% } else {%>
+                            <img src="../images/user-photo/default-img.jpg">
+                        <% } %>
+                        <%= userInfo.user_name%>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                        <li><a href="/signout"><span class="glyphicon glyphicon-log-out log-out"></span> Log Out</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+        <!--notification menu end -->
+
+        </div>
+        <!-- header section end-->
+
+        <!-- page heading start-->
+        <div class="page-heading">
+            <h3>
+               Blog Manage
+            </h3>
+            <ul class="breadcrumb">
+                <li> 
+                    <a href="/usermanage">用户管理</a></li>
+                <li class="active">
+                博客管理</li>
+            </ul>
+        </div>
+        <!-- page heading end-->
+
+        <!--body wrapper start-->
+        <div class="wrapper">
+        <div class="row">
+        <div class="col-sm-12">
+        <section class="panel">
+        <header class="panel-heading">
+            Blog Tables
+            <span class="tools pull-right">
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+                <a href="javascript:;" class="fa fa-times"></a>
+             </span>
+        </header>
+        <div class="panel-body">
+        <!-- blog table -->
+        <div class="adv-table blog-table" >
+            <table class="display table table-bordered" id="hidden-table-info">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>博客</th>
+                <th class="hidden-phone">作者</th>
+                <th class="hidden-phone">创建时间</th>
+                <th class="hidden-phone">关键字</th>
+                <th class="hidden-phone">首页展示</th>
+                <th class="hidden-phone">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% for (var i = 0; i < blogs.length; i++) { %>
+            <tr class="gradeU">
+                <td><%= blogs[i].id%></td>
+                <td>
+                    <a style="color:#7a7676" href="/blog-detail/d<%= blogs[i].id%>" target="_blank"><%= blogs[i].title%></a>
+                </td>
+                <td class="hidden-phone"><%= blogs[i].user_name%></td>
+                <td class="hidden-phone"><%= blogs[i].create_time%></td>
+                <td class="hidden-phone"><%= blogs[i].lable%></td>
+                <td class="center hidden-phone">
+                <% if (blogs[i].recommend) {%>
+                  <input type="checkbox" name="optionsRadios" data-blogid="<%= blogs[i].id %>" class="optionsRadios" value="option1" checked />
+                <% } else {%>
+                  <input type="checkbox" name="optionsRadios" data-blogid="<%= blogs[i].id %>" class="optionsRadios" value="option1" />
+                <% } %>
+                </td>
+                <td class="hidden-phone">
+                    <button class="btn btn-info delete-btn" data-blogid="<%= blogs[i].id %>">删除</button>
+                </td>
+            </tr>
+            <% } %>
+            </tbody>
+            </table>
+        </div>
+        </div>
+        </section>
+        </div>
+        </div>
+        </div>
+        <!--body wrapper end-->
+
+        <!--footer section start-->
+        <footer>
+            2014 &copy; AdminEx by ThemeBucket
+        </footer>
+        <!--footer section end-->
+
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/jquery-ui-1.9.2.custom.min.js"></script>
+<script src="js/jquery-migrate-1.2.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/modernizr.min.js"></script>
+<script src="js/jquery.nicescroll.js"></script>
+
+<!--dynamic table-->
+<!-- <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script> -->
+<script type="text/javascript" language="javascript" src="js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="js/DT_bootstrap.js"></script>
+<!--dynamic table initialization -->
+<script src="js/blog_table_init.js"></script>
+
+<!--common scripts for all pages-->
+<script src="js/scripts.js"></script>
+
+</body>
+</html>

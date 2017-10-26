@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>博客广场</title>
+  <link href="favicon.ico" type="image/x-icon" rel="icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="../css/index.css">
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
+</head>
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <a href="index" class="navbar-brand">My Blog</a>
+      </div>
+      <div id="navbar" class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <li>
+            <a href="../index"><span class="glyphicon glyphicon-home"></span>  主页</a>
+          </li>
+            <% if (typeof userInfo != 'undefined') {%>
+            <li><a href="/person-blog/u<%=userInfo.id %>/p1"><span class="glyphicon glyphicon-list-alt"></span> 我的博客 </a></li>
+            <li><a href="../blog-create/b0" target="_blank"><span class="glyphicon glyphicon-list-alt"></span> 新建博客 </a></li>
+          <% } else {%>
+            <li><a href="/signin"><span class="glyphicon glyphicon-list-alt"></span> 我的博客 </a></li>
+            <li><a href="/signin" target="_blank"><span class="glyphicon glyphicon-list-alt"></span> 新建博客 </a></li>
+          <% } %>
+          
+        </ul>
+        <% if (typeof userInfo != 'undefined') {%>
+        <ul class="nav navbar-nav user-message">
+          <li class="mess-tips">
+              <span class="glyphicon glyphicon-envelope envelope"> </span>
+              <span class="news">5</span>
+          </li>
+          <li>
+            <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+              <% if(userInfo.image) { %>
+                  <img src="<%= userInfo.image%>">
+              <% }else {%>
+                  <img src="../images/user-photo/default-img.jpg">
+              <% }%>
+              <span class="username" data-userid="<%= userInfo.id %>"><%= userInfo.user_name%></span>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                <li><a href="../signout"><span class="glyphicon glyphicon-log-out log-out"></span> Log Out</a></li>
+            </ul>
+          </li>
+        </ul>
+        <% } else {%>
+        <ul class="nav navbar-nav user-message">
+          <li>
+            <a href="/signin"><span class="glyphicon glyphicon-log-in"> 登录</span></a>
+          </li>
+          <li>
+            <a href="/signup"><span class="glyphicon glyphicon-registration-mark"> 注册</span></a>
+          </li>
+        </ul>
+        <% }%>
+        
+      </div>
+    </div>
+  </nav>
+
+<div class="container main-container">
+  <div class="row">
+    <!-- 选择导航栏 -->
+    <div class="col-md-3" id="nav-choose-list">
+      <ul class="nav nav-tabs nav-stacked nav-new-style">
+        <li role="presentation" v-for="(list, index) in countList" v-on:click="categoryClick(list.id),activeClick(index)" v-bind:class="{ 'toActive': active == index}" >
+          <a>
+            <span class="glyphicon glyphicon-flash"></span> {{list.category}} 
+            <span class="plus">&nbsp;{{list.count}}&nbsp;</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <!-- 中间主要内容 -->
+    <div class="col-md-8">
+        <ul class="nav nav-tabs" id="nav-top-list">
+            <li role="presentation" v-bind:class="{ 'active': cur == 1}"><a href="" v-on:click="navClick(1)">精华</a></li>
+            <li role="presentation" v-bind:class="{ 'active': cur == 2}"><a v-on:click="navClick(2)" >推荐</a></li>
+            <li role="presentation" v-bind:class="{ 'active': cur == 3}"><a v-on:click="navClick(3)" >最热</a></li>
+            <li role="presentation" v-bind:class="{ 'active': cur == 4}"><a v-on:click="navClick(4)" >最新</a></li>
+            <% if (typeof userInfo != 'undefined') {%>
+              <li role="presentation" v-bind:class="{ 'active': cur == 5}"><a v-on:click="navClick(5)" >我评</a></li>
+            <% } else {%>
+              <li role="presentation" v-bind:class="{ 'active': cur == 5}"><a href="signin" >我评</a></li>
+            <% } %>
+        </ul>
+        <div class="page-content">
+            <!-- one -->
+            <div id="essay-content">
+              <div class="one-essay" v-for="(blog, index) in blogList" track-by="_uid">
+                  <div class="essay-left">
+                      <div class="recomment-count">{{ blog.upvote_count }}</div>
+                      <span class="glyphicon glyphicon-thumbs-up" v-on:click="addZanCount(index)"></span>
+                  </div>
+                  <div class="essay-right">    
+                      <p><a v-bind:href="'/blog-detail/d'+(blog.id)" target="_blank">{{ blog.title }}</a></p>
+                      <div style="overflow: hidden">
+                          <div class="user-img">
+                            <a v-bind:href="'/person-blog/u'+(blog.userid)+'/p1'" target="_blank">
+                              <img v-bind:src="(blog.image)" alt=""/>
+                            </a>
+                          </div>
+                          <div class="blog-summary"> {{ blog.summary }} </div>
+                      </div>
+                      <div class="blog-detail">
+                          <span class="glyphicon glyphicon-user"> 
+                            <a v-bind:href="'/person-blog/u'+(blog.userid)+'/p1'" target="_blank">
+                              {{ blog.user_name }}
+                            </a>
+                          </span>
+                          <span class="glyphicon glyphicon-dashboard"> {{ blog.create_time.substring(0,10) }}</span>
+                          <span class="glyphicon glyphicon-eye-open"><a v-bind:href="'/blog-detail/d'+(blog.id)" target="_blank"> 评论({{ blog.comment_count }})</a></span>
+                          <span class="glyphicon glyphicon-edit"> 阅读({{ blog.watch_count }})</span>
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <!-- 分页 -->
+            <nav aria-label="Page navigation" class="navigation">
+              <ul class="pagination">
+                <li v-if="cur > 1 && all > 1">
+                  <a aria-label="Previous" v-on:click="cur--,pageClick()">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <li v-if="cur == 1 && all > 1"> 
+                  <span aria-hidden="true">&laquo;</span>
+                </li>
+                
+                <li v-for="index in indexs" v-bind:class="{ 'active': cur == index}">
+                  <a v-on:click="btnClick(index)">{{ index }}</a></li>
+                <li v-if="cur != all && all > 1">
+                  <a aria-label="Next" v-on:click="cur++,pageClick()">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                <li v-if="cur == all && all > 1">
+                    <span aria-hidden="true">&raquo;</span>
+                </li>
+              </ul>
+            </nav>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- footer开始 -->
+<footer>
+  <div class="container foot">
+    Copyright © 2016 zfBlog / Tiffany  |   联系我 : <a href="mailto:976156821@qq.com">976156821@qq.com</a>   |  All Rights Reserved.
+  </div>
+</footer>
+
+<script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../js/jquery.cookie.js"></script>
+<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/vue.js"></script>
+<script type="text/javascript" src="../js/main-index.js"></script>
+
+
+</body>
+</html>

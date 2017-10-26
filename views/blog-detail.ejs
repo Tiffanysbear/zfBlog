@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= content[0].title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../css/index.css">
+    <link rel="stylesheet" type="text/css" href="../css/clndr.css">
+    <link rel="stylesheet" type="text/css" href="../css/detail.css">
+
+
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <a href="../index" class="navbar-brand">My Blog</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="/index"><span class="glyphicon glyphicon-home"></span>  主页</a>
+            </li>
+            <% if (userInfo != 0) {%>
+              <li><a href="/person-blog/u<%= userInfo.id%>/p1"><span class="glyphicon glyphicon-list-alt"></span> 我的博客 </a></li>
+              <li><a href="../blog-create/b0" target="_blank"><span class="glyphicon glyphicon-list-alt"></span> 新建博客 </a></li>
+            <% } %>
+    
+            
+          </ul>
+          <% if (userInfo != 0) {%>
+          <ul class="nav navbar-nav user-message">
+            <li class="mess-tips">
+                <span class="glyphicon glyphicon-envelope envelope"> </span>
+                <span class="news">5</span>
+            </li>
+            <li>
+              <a href="#" class="btn dropdown-toggle" data-toggle="dropdown">
+                <% if(userInfo.image) { %>
+                    <img src="<%= userInfo.image%>">
+                <% }else {%>
+                    <img src="../images/user-photo/default-img.jpg">
+                <% }%>
+                <span class="username" data-userid="<%= userInfo.id %>"><%= userInfo.user_name%></span>
+                <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
+                  <li><a href="../signout"><span class="glyphicon glyphicon-log-out log-out"></span> Log Out</a></li>
+              </ul>
+            </li>
+          </ul>
+          <% } else {%>
+          <ul class="nav navbar-nav user-message">
+            <li>
+              <a href="/signin"><span class="glyphicon glyphicon-log-in"> 登录</span></a>
+            </li>
+            <li>
+              <a href="/signup"><span class="glyphicon glyphicon-registration-mark"> 注册</span></a>
+            </li>
+          </ul>
+          <% }%>
+          
+        </div>
+      </div>
+    </nav>
+
+<!-- 主要内容开始main -->
+    <div id="zfcontent">
+        <div class="container">
+            <div id="maincontent">
+                <!-- 左边侧栏内容开始 -->
+                <div id="leftside" class="col-md-8">
+                    <div class="pagehead">
+                        <!--展示详细的内容-->
+                        <% for(var i = 0; i < content.length; i++)
+                        {%>
+                        <h1><%= content[i].title %></h1>
+                        <p class="center">关键字:<%= content[i].tags %></p>
+                        <p class="center">作者:<%= content[i].user_name %></p>
+                        <p class="blogid" style="display:none" data-blogid="<%= content[i].id %>"></p>
+                        <div class="blog-summary"><%- content[i].summary %></div>
+                        <div class="blog-content">
+                            <%- content[i].content %>
+                       </div>
+                       <% } %>
+                        
+                    </div>
+                    
+                    <!-- 下方评论内容开始 -->
+                    <% if (comment.length > 0) {%>
+                        <div class="remark-count"><%= comment.length %>条评论</div>
+                    <% } %>
+
+                    <% for(var i = 0; i < comment.length; i++)
+                    {%>
+                    <div class="remark">
+                    <article class="remark-main">
+                            <div class="portait">
+                                <% if (comment[i].image) {%>
+                                    <img src="<%= comment[i].image%>" />
+                                <% } else {%>
+                                    <img src="/images/user-photo/default-img.jpg" />
+                                <% } %>
+                            </div>
+                            <div class="addition">
+                                <span><%= comment[i].user_name %> 说:</span>
+                                <span class="remark-nth"><%= i+1%>楼</span>
+                                <span class="remark-time"><%= comment[i].create_time %></span>
+                            </div>
+                            <div class="remark-content">
+                                <%= comment[i].content %>
+                            </div>
+                         </article>
+                    </div>
+
+                    <% } %>
+
+
+
+
+                    <!-- 用户评论开始 -->
+
+                    <div class="remark-count">快来评论吧</div>
+                    <div class="comment" type="<%= content[0].pid %>">
+                    <% if (userInfo) {%>
+                        <% if (userInfo.remark_right) {%>
+                            <div class="user-name login_name" data-userid ="<%= userInfo.id %>" ><%= userInfo.user_name %>说：</div>
+                            <textarea name="remarkcontent" placeholder="请输入140字以内的评论" id="remarkCnt"></textarea>
+                            <p id="errorCnt">*评论字数已超过140字</p>
+                            <div id="send">
+                                发表评论
+                            </div>
+                        <% } else {%>
+                            <div class="login_name">您已经被管理员禁言，请稍后再试！</div>
+                        <% } %>
+                    <% } else {%>
+                        <div class="login_name"><a href="../signin">登录</a>就可以评论咯！</div>
+                    <% } %>
+                    </div>
+                </div><!-- 左边侧栏内容结束 -->
+
+                <!-- 右边侧栏内容开始 -->
+                <div id="rightside" class="col-md-4">
+                    <!-- 评论模块 -->
+                    <div class="rightmodule hidden-sm hidden-xs">
+                      <div class="remark-header">
+                        <span class="glyphicon glyphicon-leaf"></span>
+                        <span>小日历</span>
+                        <span class="glyphicon glyphicon-chevron-up dohide"> </span>
+                        <span class="glyphicon glyphicon-remove doremove"> </span>
+                      </div>
+                      <div class="remark-list">
+                        <div class="cal1"></div>
+                      </div>
+                    </div>
+
+                </div><!-- 右边侧栏内容结束 -->
+                
+            </div>
+            <!-- maincontent结束 -->
+        </div>
+
+    </div>
+
+    <!-- footer开始 -->
+  <!--  <footer>
+        <div class="container foot">
+            Copyright © 2016 zfBlog / Tiffany  |   联系我 : <a href="mailto:976156821@qq.com">976156821@qq.com</a>   |  All Rights Reserved.
+        </div>
+    </footer>-->
+    <script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
+    <script type="text/javascript" src="../js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.toaster.js"></script>
+    <!--<script type="text/javascript" src="../js/jquery.toast.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
+    <script type="text/javascript" src="../js/clndr.js"></script>
+    <script type="text/javascript" src="../js/remark-check.js"></script>
+
+</body>
+</html>

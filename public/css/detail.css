@@ -1,0 +1,285 @@
+body{
+	font:15px '微软雅黑';
+	background-image: url('../images/backpic.jpg');
+	min-width: 500px;
+}
+.navbar-inverse{
+	background: #1ABC9C;
+	border:0;
+}
+
+.navbar-nav li:hover{
+	background-color: #1ABC9C;
+}
+.navbar-inverse .navbar-nav > li > a,.navbar-inverse .navbar-brand{
+	color: #fff;
+}
+#zfcontent{
+	margin-top:70px;
+}
+
+#maincontent{
+	width: 98%;	
+	/* _height:1%; */
+	/*overflow: auto;*/
+}
+/*左边的内容*/
+#leftside{
+	margin-right: 10px;
+	margin-left: -15px;
+	border-radius: 15px;
+	margin-bottom: 10px;
+}
+.pagehead{
+	padding: 25px;
+	background: white;
+}
+.pagehead h1{
+	font-size: 150%;
+	text-align: center;
+}
+.pagehead .center{
+	color: #999;
+	padding: 0 0 10px 0;
+	text-align: center;
+}
+
+.blog-content{
+	text-indent: 2em;
+	width: 98%;
+	line-height: 180%;
+	margin-top:20px; 
+	color: #3d4450;
+	overflow: hidden;
+}
+.blog-summary {
+	word-wrap: break-word;
+	padding: 20px;
+	border: 2px solid #dbe8e6;
+	border-radius: 10px;
+	line-height: 25px;
+}
+
+
+.remark{
+	margin-top: 20px;
+	background: white;
+	width: 98%;
+	border:2px solid #F1F5F8;
+	padding:5px 5px;
+	position: relative;
+}
+
+
+.remark-count{
+	width: 98%;
+	height: 38px;
+	border:1px solid #1ABC9C;
+	text-align:center;
+	vertical-align: middle;
+	line-height: 38px;
+	margin-top: 20px;
+	border-radius: 5px;
+	background: #1ABC9C;
+	color: white;
+	cursor: pointer;
+}
+
+.addition{
+	background: #F1F5F8;
+	padding: 10px 10px 10px 57px;
+	width: 100%;
+}
+
+
+.portait{
+	width: 55px;
+	height: 55px;
+	border-radius: 50%;
+	position: absolute;
+	left: -4px;
+	top: -5px;
+	overflow: hidden;
+	border:3px solid #D9EDF7;
+}
+
+.portait img{
+	width: 50px;
+	height: 50px;
+}
+
+.remark-time{
+	float: right;
+	padding:0 20px;
+}
+.remark-nth{
+	float: right;
+}
+.remark-content{
+	text-indent: 2em;
+	padding:20px 20px;
+	line-height: 150%;
+}
+.comment{
+	/*width: 98%;*/
+}
+.comment-nickname{	
+	margin-top: 20px;
+
+}
+.comment-nickname span{	
+	color:white;
+}
+.comment input[name="comment"]{
+	width: 50%;
+}
+
+
+.glyphicon-user{
+	background: #1ABC9C;
+}
+#error{
+	height: 40px;
+	line-height:40px;
+	color:red;
+	vertical-align: middle;
+}
+
+.comment textarea{
+	width: 100%;
+	height: 100px;
+	rows:10;
+	resize:none;
+	margin-top: 10px;
+}
+#send{
+	border: 1px solid #1ABC9C;
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	text-align: center;
+	border-radius: 5px;
+	margin-top: 10px;
+	background: #1ABC9C;
+	color: white;
+	cursor: pointer;
+}
+#send:hover {
+	background: #1ABC9F;
+}
+#error{
+	color: red;
+	height: 40px;
+	line-height: 40px;
+	display: none;
+}
+#errorCnt{
+	color: red;
+	display: none;
+}
+input[name="comment"]{
+	height: 40px;
+	top:1px;
+}
+.login_name {
+	margin: 10px 0;
+}
+
+
+/*右边的侧边栏样式*/
+.rightmodule{
+	width: 100%;
+	border-radius: 5%;
+	background-color: #fff;
+	-webkit-box-shadow:0 0 10px rgba(0, 204,204, 0.2);  
+	-moz-box-shadow:0 0 10px rgba(0, 204,204, 0.2);  
+	box-shadow:0 0 10px rgba(0, 204,204, 0.2); 
+	color: #838383;
+}
+.remark-header{
+	border-bottom: 1px solid #ccc;
+	padding:10px 15px;
+}
+.glyphicon-leaf,.glyphicon-tree-deciduous{
+	color: #5ED888;
+}
+.remark-header .dohide{
+	float: right;
+}
+.remark-header .doremove{	
+	float: right;
+	margin-right:8px; 
+}
+.remark-list{
+	padding: 0 15px;
+	margin: 0;
+	overflow: hidden;
+}
+.remark-list li{
+	border-bottom: 1px solid #ccc;
+	list-style-type: none;
+	padding: 10px 15px;
+	display:block;
+	overflow:hidden;
+	text-overflow:ellipsis;
+}
+.remark-list li .title{
+	width:75%;
+	display: inline-block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow:ellipsis;
+}
+.remark-list li .count{
+	text-align: center;
+	float: right;
+	background-color: #D9534F;
+	border-radius: 10%;
+	font: bold 0.9em arial;
+	color: #fff;
+	padding: 2px;
+	border-radius: 8px;
+
+}
+.remark-list li:last-child{
+	border:none;
+}
+
+/*图片展示区*/
+.photoshow{
+	width: 100%;
+	/*height: 200px;*/
+	margin-bottom:20px; 
+	text-align: center;
+}
+.photoshow img{
+	max-width: 80%;
+	background-size:cover;
+	margin: 10%;
+	-webkit-box-shadow:10px 0 10px rgba(0, 204,204, 0.5);  
+	-moz-box-shadow:10px 0 10px rgba(0, 204,204, 0.5);  
+	box-shadow:10px 0 10px rgba(0, 204,204, 0.5);
+}
+
+/*分页对齐中间*/
+.pagebean{
+	width: 100%;
+	/*height: 200px;*/
+	text-align: center;
+	margin: 0 auto;
+}
+/*footer*/
+.foot{
+	width: 100%;
+	background-color: #1ABC9C;
+	text-align: center;
+	font-size:1em;
+	vertical-align: middle;
+	margin: 0;
+	padding: 20px 0 20px;
+}
+.foot a{
+	color: #2D334A;
+	text-decoration:none;
+	
+}
